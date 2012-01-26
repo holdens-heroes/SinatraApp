@@ -1,11 +1,19 @@
 require "sinatra"
 require "sinatra/reloader" if development?
+require "slim"
 
-get "/:text?" do
-	s = params[:text]
-	erb :index, :layout=> true, :locals => {"name" => s}
+get "/:name.erb" do
+	name = {"name" => params[:name]}
+	erb :index, :layout=> true, :locals => name
 end
 
-get "/hi" do
-	"Hello World"
+get "/:name.haml" do
+    name = {"name" => params[:name]}
+    haml :index, :format => :html5, :locals => name
 end
+
+get "/:name.slim" do
+    name = {"name" => params[:name]}
+    slim :index, :pretty => true, :locals => name
+end
+
