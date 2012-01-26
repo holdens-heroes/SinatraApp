@@ -1,19 +1,46 @@
 require "sinatra"
 require "sinatra/reloader" if development?
+require "haml"
 require "slim"
+require "liquid"
+require "markaby"
 
 get "/:name.erb" do
-	name = {"name" => params[:name]}
-	erb :index, :layout=> true, :locals => name
+	erb :index, :locals => params
 end
 
 get "/:name.haml" do
-    name = {"name" => params[:name]}
-    haml :index, :format => :html5, :locals => name
+    haml :index, :locals => params
 end
 
 get "/:name.slim" do
-    name = {"name" => params[:name]}
-    slim :index, :pretty => true, :locals => name
+    slim :index, :locals => params
+end
+
+get "/:name" do
+    extensions = ["erb","haml","slim"]
+    liquid :index, :locals => { "name" => params[:name], "extensions" => extensions }
+end
+
+get "/" do
+    markaby {
+        html do
+            head do
+                title "sinatr-what"
+            end
+
+            body do
+                h1 "What's your name?"
+                form :action => "/", :method => "POST" do
+                    input :type => "text", :name => "name"
+                    input :type => "submit", :value => "Start!" 
+                end
+            end
+        end
+    }
+end
+
+post "/" do
+    redirect "/#{params[:name]}"
 end
 

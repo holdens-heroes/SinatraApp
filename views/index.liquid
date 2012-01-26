@@ -1,0 +1,14 @@
+<html>
+    <head>
+        <title>sintar-what</title>
+    </head>
+    <body>
+        <h1><i>{{ name }}</i> rendered this page using the <a href="http://liquidmarkup.org">liquid</a> template system.</h1>
+        <h3>Try out some other templates:</h3>
+        <ul>
+            {% for ext in extensions %}
+            <li><a href="{{ name }}.{{ ext }}">{{ ext | upcase }} Template</a></li>
+            {% endfor %}
+        </ul>
+    </body>
+</html>
